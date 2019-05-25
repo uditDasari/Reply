@@ -51,6 +51,8 @@ private FloatingActionButton floatingActionButton;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
         mtoolbar = findViewById(R.id.main_page_tool_bar);
         setSupportActionBar(mtoolbar);
         getSupportActionBar().setTitle("Reply");
@@ -59,11 +61,13 @@ private FloatingActionButton floatingActionButton;
         viewPager.setAdapter(tabAccessorAdapter);
         tabLayout = findViewById(R.id.main_tabs);
         tabLayout.setupWithViewPager(viewPager);
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
         progressBar = findViewById(R.id.main_pb);
         rootRef = FirebaseDatabase.getInstance().getReference();
         floatingActionButton = findViewById(R.id.new_group_fb);
+        if(currentUser == null)
+        {
+            sendUserToLoginActivity();
+        }
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
