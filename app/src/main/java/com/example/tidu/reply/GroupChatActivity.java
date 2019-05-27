@@ -49,7 +49,7 @@ import java.util.Locale;
 public class GroupChatActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-    String grpName,grpId,userId,userName,currentDate,currentTime,msgKey;
+    String grpName,grpId,userId,userName,grpImage,currentDate,currentTime,msgKey;
     private FirebaseAuth mAuth;
     private DatabaseReference userRef,grpNameRef,grpImageRef,userGrpImageRef;
     SimpleDateFormat dateFormat;
@@ -71,6 +71,7 @@ public class GroupChatActivity extends AppCompatActivity {
         init();
         grpName = getIntent().getExtras().get("GroupName").toString();
         grpId = getIntent().getExtras().get("GroupID").toString();
+        grpImage = getIntent().getExtras().get("GrpImage").toString();
         grpNameRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(grpId).child("Messages");
         grpImageStorageRef = FirebaseStorage.getInstance().getReference().child("Group Images");
         grpImageRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(grpId).child("GrpImage");
@@ -202,11 +203,16 @@ public class GroupChatActivity extends AppCompatActivity {
     }
 
     private void addMemebers() {
+        Intent intent = new Intent(GroupChatActivity.this,SearchActivity.class);
+        intent.putExtra("GrpName",grpName);
+        intent.putExtra("GrpId",grpId);
+        intent.putExtra("GrpImage",grpImage);
+        startActivity(intent);
 
     }
     //////
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == galleryPick && resultCode == RESULT_OK && data != null) {
             CropImage.activity()
@@ -229,7 +235,7 @@ public class GroupChatActivity extends AppCompatActivity {
                             filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
-                                    String downloadedUrl = uri.toString();
+                                    final String downloadedUrl = uri.toString();
                                     grpImageRef.setValue(downloadedUrl)
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
@@ -241,7 +247,28 @@ public class GroupChatActivity extends AppCompatActivity {
                                                     }
                                                 }
                                             });
-                                    userGrpImageRef.setValue(downloadedUrl);
+                                    //userGrpImageRef.setValue(downloadedUrl);
+                                    FirebaseDatabase.getInstance().getReference()
+                                            .child("Users").addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren())
+                                            {
+                                                if(dataSnapshot1.child("Groups").child(grpId).exists())
+                                                {
+                                                    FirebaseDatabase.getInstance().getReference()
+                                                            .child("Users").child(dataSnapshot1.getKey())
+                                                            .child("Groups").child(grpId).child("Image")
+                                                            .setValue(downloadedUrl);
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
                                 }
                             });
                         } else {

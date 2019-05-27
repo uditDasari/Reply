@@ -103,7 +103,7 @@ public class PhoneAuth extends AppCompatActivity {
                 phn.setVisibility(View.GONE);
                 verify.setVisibility(View.VISIBLE);
                 code.setVisibility(View.VISIBLE);
-                // ...
+
             }
         };
     }
@@ -127,7 +127,9 @@ public class PhoneAuth extends AppCompatActivity {
                             FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid())
                                     .child("Phone").setValue(phone);
                             progressBar.setVisibility(View.GONE);
-                            startActivity(new Intent(PhoneAuth.this,MainActivity.class));
+                            Intent intent = new Intent(PhoneAuth.this,MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
 
                         } else {
                             Toast.makeText(PhoneAuth.this, task.getException().toString(), Toast.LENGTH_SHORT).show();

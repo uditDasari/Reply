@@ -58,6 +58,7 @@ public class GroupFragmentAdapter extends RecyclerView.Adapter<GroupFragmentAdap
                 Intent intent = new Intent(mContext,GroupChatActivity.class);
                 intent.putExtra("GroupName",grpName);
                 intent.putExtra("GroupID",grpId);
+                intent.putExtra("GrpImage",grpImages.get(position));
                 mContext.startActivity(intent);
             }
         });
