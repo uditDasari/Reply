@@ -36,6 +36,7 @@ public class PhoneAuth extends AppCompatActivity {
     private static final String TAG = "PhoneAuth";
     ProgressBar progressBar;
     private String mVerificationId;
+    private String phone;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
     @Override
@@ -61,6 +62,7 @@ public class PhoneAuth extends AppCompatActivity {
             public void onClick(View v) {
                 if(!TextUtils.isEmpty(phn.getEditText().getText().toString().trim()))
                 {
+                    phone = phn.getEditText().getText().toString();
                     progressBar.setVisibility(View.VISIBLE);
 
                     PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -122,6 +124,8 @@ public class PhoneAuth extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid())
+                                    .child("Phone").setValue(phone);
                             progressBar.setVisibility(View.GONE);
                             startActivity(new Intent(PhoneAuth.this,MainActivity.class));
 
