@@ -65,6 +65,20 @@ public class SettingsActivity extends AppCompatActivity {
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                String name = username.getEditText().getText().toString().trim();
+                String status = userstatus.getEditText().getText().toString().trim();
+                if (TextUtils.isEmpty(name) || TextUtils.isEmpty(status)) {
+                    Toast.makeText(SettingsActivity.this, "fields are empty", Toast.LENGTH_SHORT).show();
+                    rootRef.child("Users").child(currentUserId).child("Name").setValue("name");
+                    rootRef.child("Users").child(currentUserId).child("Status").setValue("status");
+                } else {
+                    rootRef.child("Users").child(currentUserId).child("Name").setValue(name);
+                    rootRef.child("Users").child(currentUserId).child("Status").setValue(status);
+                    Toast.makeText(SettingsActivity.this, "success", Toast.LENGTH_SHORT).show();
+
+
+                }
                 Intent galleryIntent = new Intent();
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("image/*");
@@ -79,14 +93,14 @@ public class SettingsActivity extends AppCompatActivity {
         rootRef.child("Users").child(currentUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("Name")) && (dataSnapshot.hasChild("Image"))) {
+                if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("Name"))&& (dataSnapshot.hasChild("Status")) && (dataSnapshot.hasChild("Image"))) {
                     String retreivedUserName = dataSnapshot.child("Name").getValue().toString();
                     String retreivedUserStatus = dataSnapshot.child("Status").getValue().toString();
                     String retreivedUserImage = dataSnapshot.child("Image").getValue().toString();
                     username.getEditText().setText(retreivedUserName);
                     userstatus.getEditText().setText(retreivedUserStatus);
                     Picasso.get().load(retreivedUserImage).into(circleImageView);
-                } else if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("Name"))) {
+                } else if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("Name"))&& (dataSnapshot.hasChild("Status"))) {
                     String retreivedUserName = dataSnapshot.child("Name").getValue().toString();
                     String retreivedUserStatus = dataSnapshot.child("Status").getValue().toString();
                     username.getEditText().setText(retreivedUserName);
@@ -109,6 +123,8 @@ public class SettingsActivity extends AppCompatActivity {
         String status = userstatus.getEditText().getText().toString().trim();
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(status)) {
             Toast.makeText(this, "fields are empty", Toast.LENGTH_SHORT).show();
+            rootRef.child("Users").child(currentUserId).child("Name").setValue("name");
+            rootRef.child("Users").child(currentUserId).child("Status").setValue("status");
         } else {
             rootRef.child("Users").child(currentUserId).child("Name").setValue(name);
             rootRef.child("Users").child(currentUserId).child("Status").setValue(status);
@@ -141,7 +157,6 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == galleryPick && resultCode == RESULT_OK && data != null) {
-            Uri imageUri = data.getData();
             CropImage.activity()
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .start(this);

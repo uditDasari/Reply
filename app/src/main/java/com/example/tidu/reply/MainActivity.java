@@ -54,6 +54,10 @@ private int tabPos;
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        if(currentUser == null)
+        {
+            sendUserToLoginActivity();
+        }
         mtoolbar = findViewById(R.id.main_page_tool_bar);
         setSupportActionBar(mtoolbar);
         getSupportActionBar().setTitle("Reply");
@@ -65,10 +69,7 @@ private int tabPos;
         progressBar = findViewById(R.id.main_pb);
         rootRef = FirebaseDatabase.getInstance().getReference();
         floatingActionButton = findViewById(R.id.new_group_fb);
-        if(currentUser == null)
-        {
-            sendUserToLoginActivity();
-        }
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

@@ -1,6 +1,7 @@
 package com.example.tidu.reply;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -50,6 +51,10 @@ private DatabaseReference grpRef;
         // Inflate the layout for this fragment
         groupFragmentView =  inflater.inflate(R.layout.fragment_group, container, false);
         mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser() == null)
+        {
+            startActivity(new Intent(getActivity(),LoginActivity.class));
+        }
         grpRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid())
                 .child("Groups");
         mImages = new ArrayList<String>();
