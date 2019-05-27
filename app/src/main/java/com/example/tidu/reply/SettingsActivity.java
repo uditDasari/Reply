@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -84,10 +85,7 @@ public class SettingsActivity extends AppCompatActivity {
                     String retreivedUserImage = dataSnapshot.child("Image").getValue().toString();
                     username.getEditText().setText(retreivedUserName);
                     userstatus.getEditText().setText(retreivedUserStatus);
-                    Glide.with(SettingsActivity.this)
-                            .asBitmap()
-                            .load(retreivedUserImage)
-                            .into(circleImageView);
+                    Picasso.get().load(retreivedUserImage).into(circleImageView);
                 } else if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("Name"))) {
                     String retreivedUserName = dataSnapshot.child("Name").getValue().toString();
                     String retreivedUserStatus = dataSnapshot.child("Status").getValue().toString();

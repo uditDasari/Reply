@@ -78,7 +78,7 @@ public class MsgAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     ((RightViewHolder) holder).rtime.setText(fbGrpMsg.time);
                     ((RightViewHolder) holder).rmessage.setText(fbGrpMsg.message);
                     //Picasso.get().load(imageUrl).into(((RightViewHolder) holder).rightImage);
-                    Glide.with(context).asBitmap().load(imageUrl).into(((RightViewHolder) holder).rightImage);
+                    Picasso.get().load(imageUrl).into(((RightViewHolder) holder).rightImage);
                 }
                 //////////
             }

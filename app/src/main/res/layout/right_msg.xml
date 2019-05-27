@@ -59,10 +59,11 @@
                 android:maxWidth="200dp"
                 android:text="hi my name is udiit and i love to code"
                 android:textColor="@color/colorAccent"
-                android:textSize="14sp"
+                android:textSize="17sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/r_time"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                />
 
             <TextView
                 android:id="@+id/r_time"

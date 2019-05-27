@@ -47,6 +47,7 @@ private FirebaseAuth mAuth;
 private ProgressBar progressBar;
 private DatabaseReference rootRef;
 private FloatingActionButton floatingActionButton;
+private int tabPos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,10 +69,42 @@ private FloatingActionButton floatingActionButton;
         {
             sendUserToLoginActivity();
         }
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getPosition() == 0)
+                {
+                    floatingActionButton.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_round_person_add_24px));
+                } else if (tab.getPosition() == 1)
+                {
+                    floatingActionButton.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_baseline_people_24px));
+                }
+                else
+                {
+                    floatingActionButton.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_round_dialpad_24px));
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tabPos = tabLayout.getSelectedTabPosition();
+                if(tabPos == 1)
                 newGroupRequested();
+                else
+                {
+                    Toast.makeText(MainActivity.this, "0 or 2", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -117,7 +150,9 @@ private FloatingActionButton floatingActionButton;
     }
 
     private void createNewGroup(final String groupName) {
-        rootRef.child("Groups").child(groupName).setValue("").addOnCompleteListener(new OnCompleteListener<Void>() {
+
+        String grpID = rootRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("Groups").push().getKey();
+        rootRef.child("Groups").child(grpID).child("Name").setValue(groupName).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful())
@@ -126,6 +161,11 @@ private FloatingActionButton floatingActionButton;
                 }
             }
         });
+
+        rootRef.child("Groups").child(grpID).child("GrpImage").setValue("https://firebasestorage.googleapis.com/v0/b/reply-ecfe4.appspot.com/o/Group%20Images%2F-LfomUPbr3UlK51eYCTh.jpg?alt=media&token=1ee0e5d4-f07f-4081-a4b3-abd853fdeb40");
+        rootRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("Groups").child(grpID).child("Name").setValue(groupName);
+        rootRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("Groups").child(grpID).
+                child("Image").setValue("https://firebasestorage.googleapis.com/v0/b/reply-ecfe4.appspot.com/o/Group%20Images%2F-LfomUPbr3UlK51eYCTh.jpg?alt=media&token=1ee0e5d4-f07f-4081-a4b3-abd853fdeb40");
 
     }
 

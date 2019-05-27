@@ -14,7 +14,9 @@
         android:orientation="vertical"
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:theme="@style/ToolbarColoredBackArrow"
-        app:titleTextColor="#442C2E"></androidx.appcompat.widget.Toolbar>
+        app:titleTextColor="#442C2E">
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -41,11 +43,25 @@
         android:layout_marginBottom="8dp"
         android:hint="Enter a message"
         android:textColor="@color/colorAccent"
-        android:textSize="14sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/sendIcon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar_grp_chat_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/grp_app_bar"
+        app:layout_constraintTop_toTopOf="@+id/grp_app_bar"
+        android:visibility="gone"/>
 
 
     <com.google.android.material.button.MaterialButton

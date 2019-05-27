@@ -2,6 +2,7 @@ package com.example.tidu.reply;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +19,17 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class GroupFragmentAdapter extends RecyclerView.Adapter<GroupFragmentAdapter.GrpFragViewHolder> {
-
+    private static final String TAG = "GroupFragmentAdapter";
     private ArrayList<String> grpNames = new ArrayList<String>();
     private ArrayList<String> grpImages = new ArrayList<String>();
+    private ArrayList<String> grpIds = new ArrayList<>();
     private Context mContext;
 
-    public GroupFragmentAdapter(ArrayList<String> grpNames, ArrayList<String> grpImages, Context mContext) {
+    public GroupFragmentAdapter(ArrayList<String> grpNames, ArrayList<String> grpImages,ArrayList<String> grpIds, Context mContext) {
         this.grpNames = grpNames;
         this.grpImages = grpImages;
         this.mContext = mContext;
+        this.grpIds = grpIds;
     }
 
 
@@ -41,16 +44,20 @@ public class GroupFragmentAdapter extends RecyclerView.Adapter<GroupFragmentAdap
     public void onBindViewHolder(@NonNull GroupFragmentAdapter.GrpFragViewHolder holder, final int position) {
 
         holder.textView.setText(grpNames.get(position));
-        Glide.with(mContext)
-                .asBitmap()
-                .load(grpImages.get(position))
-                .into(holder.circleImageView);
+        Log.d(TAG, "onBindViewHolder: "+ grpImages.get(position));
+            Glide.with(mContext)
+                    .asBitmap()
+                    .load(grpImages.get(position))
+                    .into(holder.circleImageView);
+
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String grpName = grpNames.get(position);
+                String grpId = grpIds.get(position);
                 Intent intent = new Intent(mContext,GroupChatActivity.class);
                 intent.putExtra("GroupName",grpName);
+                intent.putExtra("GroupID",grpId);
                 mContext.startActivity(intent);
             }
         });
