@@ -125,11 +125,16 @@ public class PhoneAuth extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid())
-                                    .child("Phone").setValue(phone);
-                            progressBar.setVisibility(View.GONE);
-                            Intent intent = new Intent(PhoneAuth.this,MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+                                    .child("Phone").setValue(phone).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    progressBar.setVisibility(View.GONE);
+                                    Intent intent = new Intent(PhoneAuth.this,MainActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                }
+                            });
+
 
                         } else {
                             Toast.makeText(PhoneAuth.this, task.getException().toString(), Toast.LENGTH_SHORT).show();

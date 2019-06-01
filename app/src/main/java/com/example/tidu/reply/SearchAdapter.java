@@ -59,7 +59,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                         .child("Groups").child(grpId);
                  databaseReference.child("Image").setValue(grpImage);
                  databaseReference.child("Name").setValue(grpName);
-                Toast.makeText(context, grpName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, searchResult.getName() +" is added !!", Toast.LENGTH_SHORT).show();
              //   Toast.makeText(context, searchResult.getName() + " is added", Toast.LENGTH_SHORT).show();
 
             }

@@ -54,6 +54,7 @@ private DatabaseReference grpRef;
         if(mAuth.getCurrentUser() == null)
         {
             startActivity(new Intent(getActivity(),LoginActivity.class));
+            getActivity().finish();
         }
         grpRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid())
                 .child("Groups");
