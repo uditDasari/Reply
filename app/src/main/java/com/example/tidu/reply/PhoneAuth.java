@@ -134,7 +134,8 @@ public class PhoneAuth extends AppCompatActivity {
                                     startActivity(intent);
                                 }
                             });
-
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid())
+                                    .child("Image").setValue("https://firebasestorage.googleapis.com/v0/b/reply-ecfe4.appspot.com/o/Group%20Images%2F-LfomUPbr3UlK51eYCTh.jpg?alt=media&token=1ee0e5d4-f07f-4081-a4b3-abd853fdeb40");
 
                         } else {
                             Toast.makeText(PhoneAuth.this, task.getException().toString(), Toast.LENGTH_SHORT).show();

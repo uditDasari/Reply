@@ -19,7 +19,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_round_error_24px"
+        app:srcCompat="@drawable/ic_round_error_24px"
         app:layout_constraintBottom_toTopOf="@+id/tv_show_error"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

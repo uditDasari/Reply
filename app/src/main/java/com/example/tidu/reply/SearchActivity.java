@@ -1,12 +1,5 @@
 package com.example.tidu.reply;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -15,7 +8,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -58,7 +58,7 @@ String grpName,grpImage,grpId;
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.search_view,menu);
         MenuItem item = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView)item.getActionView();
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
         searchView.setInputType(InputType.TYPE_CLASS_PHONE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
